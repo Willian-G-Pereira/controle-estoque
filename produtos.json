@@ -1,0 +1,23 @@
+{
+  "produtos": [{
+    "nome":"Camiseta Braca",
+    "preco":"30",
+    "estoque":"100",
+    "min":"5",
+    "status": true
+  },
+  {
+    "nome":"Calça Braca",
+    "preco":"30",
+    "estoque":"100",
+    "min":"5",
+    "status": true
+  },
+  {
+    "nome":"Camiseta Jeans",
+    "preco":"30",
+    "estoque":"100",
+    "min":"5",
+    "status": true
+  }]
+}
