@@ -1,23 +1,21 @@
 {
-  "produtos": [{
-    "nome":"Camiseta Braca",
-    "preco":"30",
-    "estoque":"100",
-    "min":"5",
-    "status": true
-  },
-  {
-    "nome":"Calça Braca",
-    "preco":"30",
-    "estoque":"100",
-    "min":"5",
-    "status": true
-  },
-  {
-    "nome":"Camiseta Jeans",
-    "preco":"30",
-    "estoque":"100",
-    "min":"5",
-    "status": true
-  }]
+    "produtos": [{
+        "nome": "Camiseta Branca",
+        "preco": "30",
+        "estoque": "100",
+        "min": "5",
+        "status": "true"
+    }, {
+        "nome": "Cal\u00e7a",
+        "preco": "80",
+        "estoque": "100",
+        "min": "10",
+        "status": "false"
+    }, {
+        "nome": "Cal\u00e7a Jeans",
+        "preco": "150",
+        "estoque": "100",
+        "min": "10",
+        "status": "true"
+    }]
 }

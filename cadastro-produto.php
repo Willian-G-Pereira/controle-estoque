@@ -1,60 +1,43 @@
 <?php
-
-require_once('functions.php');
 include_once('header.php');
-
-if (isset($_GET['pos'])) {
-  $pos = $_GET['pos'];
-  $produtos = exibirProdutos();
-  if ($pos >= count($produtos)){
-
-    echo "Produto inexistente";
-    exit(1);
-    }
-    $produto = $produtos[$pos];
-  }else {
-    echo "Erro";
-  }
-
+require_once('functions.php');
 ?>
 
-<body>
+<main class="container">
+    <h1>Cadastro de produto</h1>
 
-      <main class="container">
+    <form action="cadastro-produto.php" method="POST" autocomplete="off">
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" name="nome" class="form-control" value="<?php echo isset($_POST['usuario']) ? $_POST['usuario'] : '' ?>">
+        </div>
+        <div class="form-group">
+            <label for="preco">Preço</label>
+            <input type="number" name="preco" class="form-control" value="<?php echo isset($_POST['preco']) ? $_POST['preco'] : '' ?>">
+        </div>
+        <div class="form-group">
+            <label for="qtd">Quantidade em estoque</label>
+            <input type="number" name="estoque" class="form-control" value="<?php echo isset($_POST['estoque']) ? $_POST['estoque'] : '' ?>">
+        </div>
+        <div class="form-group">
+            <label for="qtd-minima">Quantidade minima</label>
+            <input type="number" name="min" class="form-control" value="<?php echo isset($_POST['min']) ? $_POST['min'] : '' ?>">
+        </div>
+        <input type="hidden" name="status" value="true">
 
-        <form  class="form-group" action="cadastro-produto.php" method="POST"  >
+        <!-- ADICIONAR INPUT FILE AQUI -->
 
-          <h1>Cadastro de Produto</h1>
+        <div class="form-group">
+            <button class="btn btn-primary" name="cadastro-produto">Salvar</button>
+        </div>
+        <?php
+        if (isset($erros)) {
+            echo "<div class='alert alert-danger'>";
+            echo "<p>$erros</p>";
+            echo "</div>";
+        }
+        ?>
+    </form>
+</main>
 
-          <div class="form-group">
-            <label for="">Nome</label>
-            <input type="text" class="form-control" placeholder="Nome" name="nome" value="<?php echo $produto['nome'] ?>">
-          </div>
-
-          <div class="form-group">
-            <label for="">Preço</label>
-            <input type="number" class="form-control" placeholder="Preço"name="preco" value="<?php echo $produto['preco'] ?>">
-          </div>
-
-          <div class="form-group">
-            <label for="">Quantidade em estoque</label>
-            <input type="number"  class="form-control"name="quantidadeestoque" value="<?php echo $produto['estoque'] ?>">
-          </div>
-
-          <div class="form-group">
-            <label for="">Quantidade minima</label>
-            <input type="number"  class="form-control"name="quantidademinima" value="<?php echo $produto['min'] ?>">
-          </div>
-
-          <div class="form-group">
-            <button type="button" class="btn btn-primary">Enviar</button>
-          </div>
-
-        </form>
-
-      </main>
-
-</body>
-<?php
-    include_once('footer.php');
-?>
+<?php include_once('footer.php'); ?>
