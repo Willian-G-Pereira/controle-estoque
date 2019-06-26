@@ -92,36 +92,105 @@ if (isset($_POST['login'])) {
 
 if (isset($_POST['cadastro-produto'])) {
 
-    // trazer upload de foto do produto
-
     $arquivoProdutos = "produtos.json";
+    $imagemProduto = "";
+
+    if ($_FILES) {
+
+        $nome = $_FILES["foto"]["name"]; // nome do arquivo
+        $nomeTemp = $_FILES["foto"]["tmp_name"]; // nome temporario do arquivo
+        $erro = $_FILES["foto"]["error"]; // erros no upload
+        $pastaRaiz = dirname(__FILE__); // encontra local do projeto
+        $pasta = "produtos/"; // pasta para salvar imagem dos produtos
+
+        $caminhoCompleto = $pastaRaiz . "/" . $pasta . $nome; // string com caminho e nome do arquivo
+
+        if ($erro == UPLOAD_ERR_OK) {
+            move_uploaded_file($nomeTemp, $caminhoCompleto); // move arquivo para minha pasta
+            $imagemProduto = $pasta . $nome;
+        }
+    }
+
 
     if (file_exists($arquivoProdutos)) {
         $jsonProdutos = file_get_contents($arquivoProdutos);
         $arrayProdutos = json_decode($jsonProdutos, true);
         unset($_POST['cadastro-produto']);
-        $arrayProdutos['produtos'][] = $_POST;
+        unset($_POST['foto']);
+        $infoProduto = $_POST;
+        $infoProduto['imagem'] = $imagemProduto;
+        $arrayProdutos['produtos'][] = $infoProduto;
         $jsonProdutos = json_encode($arrayProdutos, true);
         file_put_contents($arquivoProdutos, $jsonProdutos);
     } else {
         $arquivo = fopen($arquivoProdutos, "w");
         $arrayProdutos = ["produtos" => []];
         unset($_POST['cadastro-produto']);
-        $_POST["status"] = true;
-        $arrayProdutos['produtos'][] = $_POST;
+        unset($_POST['foto']);
+        $infoProduto = $_POST;
+        $infoProduto['imagem'] = $imagemProduto;
+        $arrayProdutos['produtos'][] = $infoProduto;
         $jsonProdutos = json_encode($arrayProdutos, true);
-        var_dump($jsonProdutos);
         file_put_contents($arquivoProdutos, $jsonProdutos);
     }
 }
 
-function exibirProdutos()
+if (isset($_POST['alterar-produto'])) {
+    $arquivoProdutos = "produtos.json";
+    $imagemProduto = "";
+
+    if ($_FILES) {
+
+        $nome = $_FILES["foto"]["name"]; // nome do arquivo
+        $nomeTemp = $_FILES["foto"]["tmp_name"]; // nome temporario do arquivo
+        $erro = $_FILES["foto"]["error"]; // erros no upload
+        $pastaRaiz = dirname(__FILE__); // encontra local do projeto
+        $pasta = "produtos/"; // pasta para salvar imagem dos produtos
+
+        $caminhoCompleto = $pastaRaiz . "/" . $pasta . $nome; // string com caminho e nome do arquivo
+
+        if ($erro == UPLOAD_ERR_OK) {
+            move_uploaded_file($nomeTemp, $caminhoCompleto); // move arquivo para minha pasta
+            $imagemProduto = $pasta . $nome;
+        }
+    }
+
+
+    $jsonProdutos = file_get_contents($arquivoProdutos);
+    $arrayProdutos = json_decode($jsonProdutos, true);
+    unset($_POST['alterar-produto']);
+    unset($_POST['foto']);
+    $infoProduto = $_POST;
+    $pos = $_POST['pos'];
+    $infoProduto['imagem'] = $imagemProduto !== "" ? $imagemProduto : $arrayProdutos['produtos'][$pos]['imagem'];
+    $arrayProdutos['produtos'][$pos] = $infoProduto;
+    $jsonProdutos = json_encode($arrayProdutos, true);
+    file_put_contents($arquivoProdutos, $jsonProdutos);
+}
+
+if (isset($_POST['deletar-produto'])) {
+
+    $arquivoProdutos = "produtos.json";
+    $jsonProdutos = file_get_contents($arquivoProdutos);
+    $arrayProdutos = json_decode($jsonProdutos, true);
+    $pos = $_POST['pos'];
+    unset($arrayProdutos['produtos'][$pos]);
+    $arrayProdutos['produtos'] = array_values($arrayProdutos['produtos']);
+    $jsonProdutos = json_encode($arrayProdutos, true);
+    file_put_contents($arquivoProdutos, $jsonProdutos);
+}
+
+function carregaProdutos()
 {
     $arquivoProdutos = "produtos.json";
 
     if (file_exists($arquivoProdutos)) {
         $jsonProdutos = file_get_contents($arquivoProdutos);
         $arrayProdutos = json_decode($jsonProdutos, true);
+
+        // teste se arrayProdutos === false. se for
+        // use a json_last_error_msg para imprimir msg
+        // de erro na tela. 
         return $arrayProdutos["produtos"];
     }
 }
